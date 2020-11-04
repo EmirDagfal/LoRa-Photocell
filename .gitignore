@@ -1,0 +1,18 @@
+
+### Mbed ###
+.mbed
+GettingStarted.html
+mbed-os.lib
+mbed-os
+mbed_config.h
+libxDot-mbed5.lib
+libxDot-mbed5
+
+
+### vscode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
