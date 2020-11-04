@@ -27,6 +27,7 @@ private:
   float last;
   float highTHold;
   float lowTHold;
+
   setState();
 
 public:
