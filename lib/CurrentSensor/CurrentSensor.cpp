@@ -1,5 +1,5 @@
 /**
- * @file    CurrentSensor.h
+ * @file    CurrentSensor.cpp
  * @brief   Driver para sensor ACS722
  * @author  Emir Dagfal
  * @version 1.0
