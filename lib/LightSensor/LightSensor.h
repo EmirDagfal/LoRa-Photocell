@@ -12,7 +12,7 @@
 #ifndef __ED_LIGHT_SENSOR__
 #define __ED_LIGHT_SENSOR__
 
-#include "index.h"
+#include "mbed.h"
 
 // * Constants
 const float HIGHT = 0.7;

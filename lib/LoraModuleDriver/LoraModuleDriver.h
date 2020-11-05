@@ -4,15 +4,20 @@
  * @author  Emir Dagfal
  * @version 1.0
  *
- *
  */
 
 #ifndef __ED_LORA_MODULE_DRIVER__
 #define __ED_LORA_MODULE_DRIVER__
 
+#include "dot_util.h"
+#include "RadioEvent.h"
 #include "index.h"
 
 // * Constants
+// mDot *dot = NULL;
+// lora::ChannelPlan *plan = NULL;
+// extern mDot *dot;
+// extern lora::ChannelPlan *plan;
 
 class LoraModuleDriver
 {
@@ -39,38 +44,13 @@ private:
   void initConfig();
 
 public:
-  LoraModuleDriver(/* args */);
+  LoraModuleDriver(mDot *d, lora::ChannelPlan *p);
   ~LoraModuleDriver();
   bool getDeepsleep();
+  void join();
+  bool isJoined();
+  void deepSleep();
+  void send(std::vector<uint8_t> data);
 };
-
-LoraModuleDriver::LoraModuleDriver(/* args */)
-    : network_id{0x70, 0xB3, 0xD5, 0x7E, 0xD0, 0x03, 0x5B, 0x5C},
-      network_key{0x25, 0xCB, 0xCF, 0x9B, 0x80, 0x8D, 0x8C, 0xC3, 0xE1, 0xB2, 0x67, 0xFA, 0xC4, 0xE0, 0x6D, 0x76},
-      dot(NULL),
-      plan(NULL)
-{
-  // * Inicializacion de propiedades
-  network_name = "MultiTech";
-  network_passphrase = "MultiTech";
-  frequency_sub_band = 2;
-  network_type = lora::PUBLIC_LORAWAN;
-  join_delay = 5;
-  ack = 0;
-  adr = true;
-
-  // deepsleep consumes slightly less current than sleep
-  // in sleep mode, IO state is maintained, RAM is retained, and application will resume after waking up
-  // in deepsleep mode, IOs float, RAM is lost, and application will start from beginning after waking up
-  // if deep_sleep == true, device will enter deepsleep mode
-  deep_sleep = false;
-
-  // * Rutina de configuracion
-  initConfig();
-}
-
-LoraModuleDriver::~LoraModuleDriver()
-{
-}
 
 #endif

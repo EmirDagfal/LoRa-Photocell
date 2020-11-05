@@ -11,7 +11,7 @@
 #ifndef __ED_CURRENT_SENSOR__
 #define __ED_CURRENT_SENSOR__
 
-#include "index.h"
+#include "mbed.h"
 
 // * Constants
 const float curr_sens = 1.352; // I/Vpp [mA/mV = A/V = 1/ohm]

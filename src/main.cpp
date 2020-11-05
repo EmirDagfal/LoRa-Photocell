@@ -25,8 +25,8 @@ int main()
    *
    *
    */
-  LoraModuleDriver loraModule;
-  dot = loraModule.dot;
+  LoraModuleDriver loraModule(dot, plan);
+  // dot = loraModule.dot;
 
   while (true)
   {
@@ -34,11 +34,7 @@ int main()
     uint16_t light;
     std::vector<uint8_t> tx_data;
 
-    // join network if not joined
-    if (!dot->getNetworkJoinStatus())
-    {
-      join_network();
-    }
+    loraModule.join();
 
 #if defined(TARGET_XDOT_L151CC)
     // configure the ISL29011 sensor on the xDot-DK for continuous ambient light sampling, 16 bit conversion, and maximum range
@@ -51,7 +47,7 @@ int main()
     tx_data.push_back((light >> 8) & 0xFF);
     tx_data.push_back(light & 0xFF);
     logInfo("light: %lu [0x%04X]", light, light);
-    send_data(tx_data);
+    loraModule.send(tx_data);
 
     // put the LSL29011 ambient light sensor into a low power state
     lux.setMode(ISL29011::PWR_DOWN);
@@ -61,21 +57,10 @@ int main()
     tx_data.push_back((light >> 8) & 0xFF);
     tx_data.push_back(light & 0xFF);
     logInfo("light: %lu [0x%04X]", light, light);
-    send_data(tx_data);
+    loraModule.send(tx_data);
 #endif
 
-    // if going into deepsleep mode, save the session so we don't need to join again after waking up
-    // not necessary if going into sleep mode since RAM is retained
-    if (deep_sleep)
-    {
-      logInfo("saving network session to NVM");
-      dot->saveNetworkSession();
-    }
-
-    // ONLY ONE of the three functions below should be uncommented depending on the desired wakeup method
-    //sleep_wake_rtc_only(deep_sleep);
-    //sleep_wake_interrupt_only(deep_sleep);
-    sleep_wake_rtc_or_interrupt(deep_sleep);
+    loraModule.deepSleep();
   }
 
   return 0;

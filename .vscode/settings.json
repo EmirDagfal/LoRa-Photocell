@@ -1,0 +1,10 @@
+{
+  "files.associations": {
+    "mstd_cstddef": "cpp",
+    "mstd_functional": "cpp",
+    "mstd_iterator": "cpp",
+    "mstd_memory": "cpp",
+    "mstd_type_traits": "cpp",
+    "mstd_utility": "cpp"
+  }
+}

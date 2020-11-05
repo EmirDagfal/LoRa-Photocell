@@ -4,9 +4,38 @@
  * @author  Emir Dagfal
  * @version 1.0
  *
- *
  */
 #include "LoraModuleDriver.h"
+
+LoraModuleDriver::LoraModuleDriver(mDot *d, lora::ChannelPlan *p)
+    : network_id{0x70, 0xB3, 0xD5, 0x7E, 0xD0, 0x03, 0x5B, 0x5C},
+      network_key{0x25, 0xCB, 0xCF, 0x9B, 0x80, 0x8D, 0x8C, 0xC3, 0xE1, 0xB2, 0x67, 0xFA, 0xC4, 0xE0, 0x6D, 0x76},
+      dot(d),
+      plan(p)
+
+{
+  // * Inicializacion de propiedades
+  network_name = "MultiTech";
+  network_passphrase = "MultiTech";
+  frequency_sub_band = 2;
+  network_type = lora::PUBLIC_LORAWAN;
+  join_delay = 5;
+  ack = 0;
+  adr = true;
+
+  // deepsleep consumes slightly less current than sleep
+  // in sleep mode, IO state is maintained, RAM is retained, and application will resume after waking up
+  // in deepsleep mode, IOs float, RAM is lost, and application will start from beginning after waking up
+  // if deep_sleep == true, device will enter deepsleep mode
+  deep_sleep = false;
+
+  // * Rutina de configuracion
+  initConfig();
+}
+
+LoraModuleDriver::~LoraModuleDriver()
+{
+}
 
 void LoraModuleDriver::initConfig()
 {
@@ -112,4 +141,42 @@ void LoraModuleDriver::initConfig()
     logInfo("restoring network session from NVM");
     dot->restoreNetworkSession();
   }
+}
+
+bool LoraModuleDriver::getDeepsleep()
+{
+  return deep_sleep;
+}
+void LoraModuleDriver::join()
+{
+  // join network if not joined
+  if (!isJoined())
+  {
+    join_network();
+  }
+}
+
+bool LoraModuleDriver::isJoined()
+{
+  return dot->getNetworkJoinStatus();
+}
+
+void LoraModuleDriver::send(std::vector<uint8_t> data)
+{
+  send_data(data);
+}
+void LoraModuleDriver::deepSleep()
+{
+  // if going into deepsleep mode, save the session so we don't need to join again after waking up
+  // not necessary if going into sleep mode since RAM is retained
+  if (deep_sleep)
+  {
+    logInfo("saving network session to NVM");
+    dot->saveNetworkSession();
+  }
+
+  // ONLY ONE of the three functions below should be uncommented depending on the desired wakeup method
+  //sleep_wake_rtc_only(deep_sleep);
+  //sleep_wake_interrupt_only(deep_sleep);
+  sleep_wake_rtc_or_interrupt(deep_sleep);
 }
