@@ -20,11 +20,11 @@ uint8_t LuminaryDriver::getDimming()
 {
   return (uint8_t)(dimming.read() * 100); // value in %
 }
-void LuminaryDriver::setRelay(bool value = true)
+void LuminaryDriver::setRelay(bool value)
 {
   relay = value;
 }
-void LuminaryDriver::setDimming(uint8_t value = 100) // value in %
+void LuminaryDriver::setDimming(uint8_t value) // value in %
 {
   if (value <= 0)
   {

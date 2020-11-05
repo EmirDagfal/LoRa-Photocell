@@ -25,7 +25,7 @@ bool LightSensor::getState()
   return state;
 }
 
-void LightSensor::setTHold(float high = HIGHT, float low = LOW)
+void LightSensor::setTHold(float high, float low)
 {
   highTHold = high;
   lowTHold = low;
@@ -41,6 +41,6 @@ void LightSensor::setState()
   else
   {
     // Light is descending
-    state = (current < lowThold) ? false : state;
+    state = (current < lowTHold) ? false : state;
   }
 }
