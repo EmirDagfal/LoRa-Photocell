@@ -28,9 +28,9 @@ void CurrentSensor::setValues()
   float min = 1.0;
   float value = 0;
 
-  timer_.reset();
-  timer_.start();
-  while (timer_.read_ms() < 40)
+  t.reset();
+  t.start();
+  while (t.read_ms() < 40)
   {
     value = ((currentIn.read()) - 0.5);
     if (value < min)
@@ -42,7 +42,7 @@ void CurrentSensor::setValues()
       max = value;
     }
   }
-  timer_.stop();
+  t.stop();
   value = (max - min) * curr_sens * 3.3;
   if (value < thr_curr)
   {
