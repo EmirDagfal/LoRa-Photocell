@@ -35,7 +35,7 @@ public:
 
 LuminaryDriver::LuminaryDriver(/* args */) : relay(PB_2), dimming(PB_0)
 {
-  dimming.period_us(1000); //Periodo 1 Segundo
+  dimming.period_us(1000); //Periodo .1 Segundo
 }
 
 LuminaryDriver::~LuminaryDriver()

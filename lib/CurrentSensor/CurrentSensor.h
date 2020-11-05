@@ -29,8 +29,8 @@ private:
 public:
   CurrentSensor(/* args */);
   ~CurrentSensor();
-  void get();
-  void getEstimatedPower();
+  float get();
+  float getEstimatedPower();
 };
 
 CurrentSensor::CurrentSensor(/* args */) : currentIn(PB_12)

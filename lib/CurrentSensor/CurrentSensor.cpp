@@ -10,13 +10,13 @@
 
 #include "CurrentSensor.h"
 
-void CurrentSensor::get()
+float CurrentSensor::get()
 {
   setValues();
   return current; // value in Ampere
 }
 
-void CurrentSensor::getEstimatedPower()
+float CurrentSensor::getEstimatedPower()
 {
   setValues();
   return power; //value in W

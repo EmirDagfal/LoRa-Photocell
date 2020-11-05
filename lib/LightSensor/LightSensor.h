@@ -28,19 +28,19 @@ private:
   float highTHold;
   float lowTHold;
 
-  setState();
+  void setState();
 
 public:
   LightSensor(/* args */);
   ~LightSensor();
   float get();
   bool getState();
-  setTHold(float high = HIGHT, float low = LOW);
+  void setTHold(float high = HIGHT, float low = LOW);
 };
 
 LightSensor::LightSensor(/* args */) : lightIn(PB_13)
 {
-  state = 1;
+  state = true;
 }
 
 LightSensor::~LightSensor()
