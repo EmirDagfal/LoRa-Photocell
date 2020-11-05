@@ -19,7 +19,7 @@
 // extern mDot *dot;
 // extern lora::ChannelPlan *plan;
 
-class LoraModuleDriver
+class LoraModuleDriver : public dot_util
 {
 private:
   std::string network_name;
@@ -38,17 +38,19 @@ private:
   // if deep_sleep == true, device will enter deepsleep mode
   bool deep_sleep;
 
-  mDot *dot;
+  // mDot *dot;
   lora::ChannelPlan *plan;
 
   void initConfig();
 
 public:
-  LoraModuleDriver(mDot *d, lora::ChannelPlan *p);
+  LoraModuleDriver(mDot *d = NULL, lora::ChannelPlan *p = NULL);
   ~LoraModuleDriver();
+  // * Getters
   bool getDeepsleep();
-  void join();
   bool isJoined();
+  // * Actions
+  void join();
   void deepSleep();
   void send(std::vector<uint8_t> data);
 };

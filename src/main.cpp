@@ -3,9 +3,6 @@
 
 #if ACTIVE_EXAMPLE == MAIN
 
-mDot *dot = NULL;
-lora::ChannelPlan *plan = NULL;
-
 #if defined(TARGET_XDOT_L151CC)
 I2C i2c(I2C_SDA, I2C_SCL);
 ISL29011 lux(i2c);
@@ -25,8 +22,7 @@ int main()
    *
    *
    */
-  LoraModuleDriver loraModule(dot, plan);
-  // dot = loraModule.dot;
+  LoraModuleDriver loraModule;
 
   while (true)
   {
