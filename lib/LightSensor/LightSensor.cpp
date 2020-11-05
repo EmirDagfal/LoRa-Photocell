@@ -12,35 +12,35 @@
 
 float LightSensor::get()
 {
-  this.last = this.current;
-  this.current = lightIn.read();
-  this.setState();
+  last = current;
+  current = lightIn.read();
+  setState();
 
-  return this.current;
+  return current;
 }
 
 bool LightSensor::getState()
 {
-  this.setState();
-  return this.state;
+  setState();
+  return state;
 }
 
-LightSensor::setTHold(float high = HIGHT, float low = LOW)
+void LightSensor::setTHold(float high = HIGHT, float low = LOW)
 {
-  this.highTHold = high;
-  this.lowTHold = low;
+  highTHold = high;
+  lowTHold = low;
 }
 
-LightSensor::setState()
+void LightSensor::setState()
 {
-  if (this.last < this.current)
+  if (last < current)
   {
     // Light is rising
-    this.state = (this.current > this.highTHold) ? true : this.state;
+    state = (current > highTHold) ? true : state;
   }
   else
   {
     // Light is descending
-    this.state = (this.current < this.lowThold) ? false : this.state;
+    state = (current < lowThold) ? false : state;
   }
 }

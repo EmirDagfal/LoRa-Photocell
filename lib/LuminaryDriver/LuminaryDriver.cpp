@@ -14,22 +14,22 @@
 
 bool LuminaryDriver::getRelay()
 {
-  return (bool)this.relay;
+  return (bool)relay;
 }
 uint8_t LuminaryDriver::getDimming()
 {
-  return (uint8_t)(this.dimming.read() * 100); // value in %
+  return (uint8_t)(dimming.read() * 100); // value in %
 }
-LuminaryDriver::setRelay(bool value = true)
+void LuminaryDriver::setRelay(bool value = true)
 {
-  this.relay = value;
+  relay = value;
 }
-LuminaryDriver::setDimming(uint8_t value = 100) // value in %
+void LuminaryDriver::setDimming(uint8_t value = 100) // value in %
 {
   if (value <= 0)
   {
-    this.relay = 0;
+    relay = 0;
     value = 0;
   }
-  this.dimming.pulsewidth_us(value * 10);
+  dimming.pulsewidth_us(value * 10);
 }

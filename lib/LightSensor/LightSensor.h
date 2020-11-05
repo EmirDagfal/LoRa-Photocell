@@ -38,10 +38,9 @@ public:
   setTHold(float high = HIGHT, float low = LOW);
 };
 
-LightSensor::LightSensor(/* args */)
+LightSensor::LightSensor(/* args */) : lightIn(PB_13)
 {
-  this.state = 1;
-  this.lightIn(PB_13)
+  state = 1;
 }
 
 LightSensor::~LightSensor()

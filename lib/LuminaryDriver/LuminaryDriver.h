@@ -29,14 +29,12 @@ public:
   ~LuminaryDriver();
   bool getRelay();
   uint8_t getDimming();
-  setRelay(bool value = true);
-  setDimming(uint8_t value = 100);
+  void setRelay(bool value = true);
+  void setDimming(uint8_t value = 100);
 };
 
-LuminaryDriver::LuminaryDriver(/* args */)
+LuminaryDriver::LuminaryDriver(/* args */) : relay(PB_2), dimming(PB_0)
 {
-  relay(PB_2);
-  dimming((PB_0));
   dimming.period_us(1000); //Periodo 1 Segundo
 }
 

@@ -10,19 +10,19 @@
 
 #include "CurrentSensor.h"
 
-CurrentSensor::get()
+void CurrentSensor::get()
 {
-  this.setValues();
-  return this.current; // value in Ampere
+  setValues();
+  return current; // value in Ampere
 }
 
-CurrentSensor::getEstimatedPower()
+void CurrentSensor::getEstimatedPower()
 {
-  this.setValues();
-  return this.power; //value in W
+  setValues();
+  return power; //value in W
 }
 
-CurrentSensor::setValues()
+void CurrentSensor::setValues()
 {
   float max = 0.0;
   float min = 1.0;
@@ -49,6 +49,6 @@ CurrentSensor::setValues()
     value = 0;
   }
 
-  this.current = value;
-  this.power = value * 220;
+  current = value;
+  power = value * 220;
 }

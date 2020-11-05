@@ -24,20 +24,19 @@ private:
   Timer t;
   float current;
   float power;
-  setValues();
+  void setValues();
 
 public:
   CurrentSensor(/* args */);
   ~CurrentSensor();
-  get();
-  getEstimatedPower();
+  void get();
+  void getEstimatedPower();
 };
 
-CurrentSensor::CurrentSensor(/* args */)
+CurrentSensor::CurrentSensor(/* args */) : currentIn(PB_12)
 {
-  this.currentIn(PB_12);
-  this.current = 0;
-  this.power = 0;
+  current = 0;
+  power = 0;
 }
 
 CurrentSensor::~CurrentSensor()
