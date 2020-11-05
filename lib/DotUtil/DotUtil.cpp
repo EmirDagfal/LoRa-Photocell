@@ -1,17 +1,14 @@
-#include "dot_util.h"
-#if defined(TARGET_XDOT_L151CC)
-#include "xdot_low_power.h"
-#endif
+#include "DotUtil.h"
 
-#if defined(TARGET_MTS_MDOT_F411RE)
-uint32_t portA[6];
-uint32_t portB[6];
-uint32_t portC[6];
-uint32_t portD[6];
-uint32_t portH[6];
-#endif
+DotUtil::DotUtil(mDot *d) : dot(d)
+{
+}
 
-void display_config()
+DotUtil::~DotUtil()
+{
+}
+
+void DotUtil::display_config()
 {
   // display configuration and library version information
   logInfo("=====================");
@@ -76,7 +73,7 @@ void display_config()
   }
 }
 
-void update_ota_config_name_phrase(std::string network_name, std::string network_passphrase, uint8_t frequency_sub_band, lora::NetworkType network_type, uint8_t ack)
+void DotUtil::update_ota_config_name_phrase(std::string network_name, std::string network_passphrase, uint8_t frequency_sub_band, lora::NetworkType network_type, uint8_t ack)
 {
   std::string current_network_name = dot->getNetworkName();
   std::string current_network_passphrase = dot->getNetworkPassphrase();
@@ -132,7 +129,7 @@ void update_ota_config_name_phrase(std::string network_name, std::string network
   }
 }
 
-void update_ota_config_id_key(uint8_t *network_id, uint8_t *network_key, uint8_t frequency_sub_band, lora::NetworkType network_type, uint8_t ack)
+void DotUtil::update_ota_config_id_key(uint8_t *network_id, uint8_t *network_key, uint8_t frequency_sub_band, lora::NetworkType network_type, uint8_t ack)
 {
   std::vector<uint8_t> current_network_id = dot->getNetworkId();
   std::vector<uint8_t> current_network_key = dot->getNetworkKey();
@@ -191,7 +188,7 @@ void update_ota_config_id_key(uint8_t *network_id, uint8_t *network_key, uint8_t
   }
 }
 
-void update_manual_config(uint8_t *network_address, uint8_t *network_session_key, uint8_t *data_session_key, uint8_t frequency_sub_band, lora::NetworkType network_type, uint8_t ack)
+void DotUtil::update_manual_config(uint8_t *network_address, uint8_t *network_session_key, uint8_t *data_session_key, uint8_t frequency_sub_band, lora::NetworkType network_type, uint8_t ack)
 {
   std::vector<uint8_t> current_network_address = dot->getNetworkAddress();
   std::vector<uint8_t> current_network_session_key = dot->getNetworkSessionKey();
@@ -258,7 +255,7 @@ void update_manual_config(uint8_t *network_address, uint8_t *network_session_key
   }
 }
 
-void update_peer_to_peer_config(uint8_t *network_address, uint8_t *network_session_key, uint8_t *data_session_key, uint32_t tx_frequency, uint8_t tx_datarate, uint8_t tx_power)
+void DotUtil::update_peer_to_peer_config(uint8_t *network_address, uint8_t *network_session_key, uint8_t *data_session_key, uint32_t tx_frequency, uint8_t tx_datarate, uint8_t tx_power)
 {
   std::vector<uint8_t> current_network_address = dot->getNetworkAddress();
   std::vector<uint8_t> current_network_session_key = dot->getNetworkSessionKey();
@@ -326,7 +323,7 @@ void update_peer_to_peer_config(uint8_t *network_address, uint8_t *network_sessi
   }
 }
 
-void update_network_link_check_config(uint8_t link_check_count, uint8_t link_check_threshold)
+void DotUtil::update_network_link_check_config(uint8_t link_check_count, uint8_t link_check_threshold)
 {
   uint8_t current_link_check_count = dot->getLinkCheckCount();
   uint8_t current_link_check_threshold = dot->getLinkCheckThreshold();
@@ -350,7 +347,7 @@ void update_network_link_check_config(uint8_t link_check_count, uint8_t link_che
   }
 }
 
-void join_network()
+void DotUtil::join_network()
 {
   int32_t j_attempts = 0;
   int32_t ret = mDot::MDOT_ERROR;
@@ -359,7 +356,9 @@ void join_network()
   while (ret != mDot::MDOT_OK)
   {
     logInfo("attempt %d to join network", ++j_attempts);
+    logInfo("Aca esta el tema");
     ret = dot->joinNetwork();
+    logInfo("Safamos");
     if (ret != mDot::MDOT_OK)
     {
       logError("failed to join network %d:%s", ret, mDot::getReturnCodeString(ret).c_str());
@@ -379,7 +378,7 @@ void join_network()
   }
 }
 
-void sleep_wake_rtc_only(bool deepsleep)
+void DotUtil::sleep_wake_rtc_only(bool deepsleep)
 {
   // in some frequency bands we need to wait until another channel is available before transmitting again
   // wait at least 10s between transmissions
@@ -421,7 +420,7 @@ void sleep_wake_rtc_only(bool deepsleep)
   }
 }
 
-void sleep_wake_interrupt_only(bool deepsleep)
+void DotUtil::sleep_wake_interrupt_only(bool deepsleep)
 {
 #if defined(TARGET_XDOT_L151CC)
   if (deepsleep)
@@ -486,7 +485,7 @@ void sleep_wake_interrupt_only(bool deepsleep)
   }
 }
 
-void sleep_wake_rtc_or_interrupt(bool deepsleep)
+void DotUtil::sleep_wake_rtc_or_interrupt(bool deepsleep)
 {
   // in some frequency bands we need to wait until another channel is available before transmitting again
   // wait at least 10s between transmissions
@@ -558,7 +557,7 @@ void sleep_wake_rtc_or_interrupt(bool deepsleep)
   }
 }
 
-void sleep_save_io()
+void DotUtil::sleep_save_io()
 {
 #if defined(TARGET_XDOT_L151CC)
   xdot_save_gpio_state();
@@ -600,7 +599,7 @@ void sleep_save_io()
 #endif
 }
 
-void sleep_configure_io()
+void DotUtil::sleep_configure_io()
 {
 #if defined(TARGET_XDOT_L151CC)
   // GPIO Ports Clock Enable
@@ -774,7 +773,7 @@ void sleep_configure_io()
 #endif
 }
 
-void sleep_restore_io()
+void DotUtil::sleep_restore_io()
 {
 #if defined(TARGET_XDOT_L151CC)
   xdot_restore_gpio_state();
@@ -816,7 +815,7 @@ void sleep_restore_io()
 #endif
 }
 
-int send_data(std::vector<uint8_t> data)
+int DotUtil::send_data(std::vector<uint8_t> data)
 {
   int32_t ret;
 
