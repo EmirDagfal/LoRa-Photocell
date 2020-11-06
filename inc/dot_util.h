@@ -1,24 +1,15 @@
-#ifndef __ED_DOT_RADIO_H__
-#define __ED_DOT_RADIO_H__
+#ifndef __DOT_UTIL_H__
+#define __DOT_UTIL_H__
 
 #include "mbed.h"
 #include "mDot.h"
 #include "ChannelPlans.h"
 #include "MTSLog.h"
 #include "MTSText.h"
+#include "ISL29011.h"
+#include "example_config.h"
 
-mDot *dot = NULL;
-lora::ChannelPlan *plan = NULL;
-
-/**
- * @brief Configuracion LoRaWAN
- *
- * En esta funcion se configuran las claves y
- * otros parametros necesarios para conectarse
- * a la red LoRaWAN
- *
- */
-void loraConfiguration();
+extern mDot* dot;
 
 void display_config();
 
