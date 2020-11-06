@@ -6,7 +6,6 @@
 #include "ChannelPlans.h"
 #include "MTSLog.h"
 #include "MTSText.h"
-#include "ISL29011.h"
 
 mDot *dot = NULL;
 lora::ChannelPlan *plan = NULL;
@@ -48,19 +47,5 @@ void sleep_configure_io();
 void sleep_restore_io();
 
 int send_data(std::vector<uint8_t> data);
-
-// !  dot_util.cpp
-// #include "dot_util.h"
-#if defined(TARGET_XDOT_L151CC)
-#include "xdot_low_power.h"
-#endif
-
-#if defined(TARGET_MTS_MDOT_F411RE)
-uint32_t portA[6];
-uint32_t portB[6];
-uint32_t portC[6];
-uint32_t portD[6];
-uint32_t portH[6];
-#endif
 
 #endif
