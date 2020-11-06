@@ -1,6 +1,6 @@
 #include "DotEvent.h"
 
-virtual void DotEvent::PacketRx(uint8_t port, uint8_t *payload, uint16_t size, int16_t rssi, int16_t snr, lora::DownlinkControl ctrl, uint8_t slot, uint8_t retries, uint32_t address, bool dupRx)
+void DotEvent::PacketRx(uint8_t port, uint8_t *payload, uint16_t size, int16_t rssi, int16_t snr, lora::DownlinkControl ctrl, uint8_t slot, uint8_t retries, uint32_t address, bool dupRx)
 {
   mDotEvent::PacketRx(port, payload, size, rssi, snr, ctrl, slot, retries, address, dupRx);
 
@@ -18,7 +18,7 @@ virtual void DotEvent::PacketRx(uint8_t port, uint8_t *payload, uint16_t size, i
      * \param [IN] flags Bit field indicating the MAC events occurred
      * \param [IN] info  Details about MAC events occurred
      */
-virtual void DotEvent::MacEvent(LoRaMacEventFlags *flags, LoRaMacEventInfo *info)
+void DotEvent::MacEvent(LoRaMacEventFlags *flags, LoRaMacEventInfo *info)
 {
 
   if (mts::MTSLog::getLogLevel() == mts::MTSLog::TRACE_LEVEL)
@@ -77,7 +77,7 @@ virtual void DotEvent::MacEvent(LoRaMacEventFlags *flags, LoRaMacEventInfo *info
   }
 }
 
-virtual void DotEvent::ServerTime(uint32_t seconds, uint8_t sub_seconds)
+void DotEvent::ServerTime(uint32_t seconds, uint8_t sub_seconds)
 {
   mDotEvent::ServerTime(seconds, sub_seconds);
 

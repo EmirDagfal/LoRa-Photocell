@@ -15,8 +15,17 @@ DigitalOut led2(LED2);
 RawSerial pc(USBTX, USBRX, 115200);
 RawSerial serialIn(UART_TX, UART_RX, 115200);
 
+// deepsleep consumes slightly less current than sleep
+// in sleep mode, IO state is maintained, RAM is retained, and application will resume after waking up
+// in deepsleep mode, IOs float, RAM is lost, and application will start from beginning after waking up
+// if deep_sleep == true, device will enter deepsleep mode
+static bool deep_sleep = false;
+
 int main()
 {
+#if defined(TARGET_XDOT_L151CC)
+  i2c.frequency(400000);
+#endif
   loraConfiguration();
 
   while (true)

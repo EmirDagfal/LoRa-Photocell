@@ -1,7 +1,6 @@
 #ifndef __ED_DOT_EVENT_H__
 #define __ED_DOT_EVENT_H__
 
-// #include "dot_util.h"
 #include "DotRadio.h"
 #include "mDotEvent.h"
 #include "Fota.h"

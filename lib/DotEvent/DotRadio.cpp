@@ -1,7 +1,6 @@
-#include "DotRadio.h"
+#include "DotEvent.h"
 
-// * LoRaWAN Constants * //
-
+// * Configuracion del plan de frecuencia
 // the active channel plan is the one that will be compiled
 // options are :
 //      CP_US915
@@ -25,20 +24,10 @@ static uint8_t join_delay = 5;
 static uint8_t ack = 0;
 static bool adr = true;
 
-// deepsleep consumes slightly less current than sleep
-// in sleep mode, IO state is maintained, RAM is retained, and application will resume after waking up
-// in deepsleep mode, IOs float, RAM is lost, and application will start from beginning after waking up
-// if deep_sleep == true, device will enter deepsleep mode
-static bool deep_sleep = false;
-
 void loraConfiguration()
 {
   // Custom event handler for automatically displaying RX data
-  RadioEvent events;
-
-#if defined(TARGET_XDOT_L151CC)
-  i2c.frequency(400000);
-#endif
+  DotEvent events;
 
   mts::MTSLog::setLogLevel(mts::MTSLog::TRACE_LEVEL);
 
