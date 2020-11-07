@@ -19,16 +19,7 @@ static bool adr = true;
 static bool deep_sleep = false;
 
 mDot *dot = NULL;
-// lora::ChannelPlan *plan = NULL;
-
-//Serial pc(USBTX, USBRX);
-
-#if defined(TARGET_XDOT_L151CC)
-I2C i2c(I2C_SDA, I2C_SCL);
-ISL29011 lux(i2c);
-#else
-AnalogIn lux(XBEE_AD0);
-#endif
+lora::ChannelPlan *plan = NULL;
 
 DigitalOut led1(LED1);
 DigitalOut led2(LED2);
@@ -36,9 +27,11 @@ DigitalOut led2(LED2);
 RawSerial pc(USBTX, USBRX, 115200);
 
 void initSetup();
+void dlCallback();
 
 int main()
 {
+
   initSetup();
 
   while (true)
@@ -78,10 +71,17 @@ int main()
   return 0;
 }
 
+void dlCallback(uint8_t port, uint8_t *payload, uint16_t size, int16_t rssi, int16_t snr)
+{
+  logInfo("Downlink!!!!!!");
+  logInfo("Port: %d, Size: %d", port, size);
+  logInfo("RSSI: %d, SNR: %d", rssi, snr);
+}
+
 void initSetup()
 {
   // Custom event handler for automatically displaying RX data
-  DotEvent events;
+  static DotEvent events(&dlCallback);
 
   mts::MTSLog::setLogLevel(mts::MTSLog::TRACE_LEVEL);
 
