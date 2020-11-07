@@ -10,7 +10,7 @@ class DotEvent : public mDotEvent
 
 public:
   DotEvent() {}
-  DotEvent(std::function<void(uint8_t port, uint8_t *payload, uint16_t size, int16_t rssi, int16_t snr)> callback) : downlinkCallback(callback) {}
+  DotEvent(void (*callback)(uint8_t, uint8_t *, uint16_t, int16_t, int16_t)) : downlinkCallback(callback) {}
 
   virtual ~DotEvent() {}
 
@@ -18,7 +18,7 @@ public:
   virtual void MacEvent(LoRaMacEventFlags *flags, LoRaMacEventInfo *info);
   virtual void ServerTime(uint32_t seconds, uint8_t sub_seconds);
 
-  void downlinkCallback(uint8_t port, uint8_t *payload, uint16_t size, int16_t rssi, int16_t snr);
+  void (*downlinkCallback)(uint8_t port, uint8_t *payload, uint16_t size, int16_t rssi, int16_t snr);
   void setDownlinkCallback(std::function<void(uint8_t port, uint8_t *payload, uint16_t size, int16_t rssi, int16_t snr)> callback);
 };
 

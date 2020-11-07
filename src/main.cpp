@@ -4,8 +4,8 @@
 #if ACTIVE_EXAMPLE == MAIN
 static std::string network_name = "MultiTech";
 static std::string network_passphrase = "MultiTech";
-static uint8_t network_id[] = {0x70, 0xB3, 0xD5, 0x7E, 0xD0, 0x03, 0x5B, 0x5C};
-static uint8_t network_key[] = {0x25, 0xCB, 0xCF, 0x9B, 0x80, 0x8D, 0x8C, 0xC3, 0xE1, 0xB2, 0x67, 0xFA, 0xC4, 0xE0, 0x6D, 0x76};
+static uint8_t appEUI[] = {0x70, 0xB3, 0xD5, 0x7E, 0xD0, 0x03, 0x7A, 0x1C};
+static uint8_t appKey[] = {0x4B, 0xBC, 0xD5, 0xB2, 0x27, 0xD7, 0xF7, 0x5C, 0x13, 0x89, 0xC5, 0x84, 0x8F, 0xF1, 0x21, 0x44};
 static uint8_t frequency_sub_band = 2;
 static lora::NetworkType network_type = lora::PUBLIC_LORAWAN;
 static uint8_t join_delay = 5;
@@ -138,7 +138,7 @@ void initSetup()
     // network ID = crc64(network name)
     // network KEY = cmac(network passphrase)
     //         update_ota_config_name_phrase(network_name, network_passphrase, frequency_sub_band, network_type, ack);
-    update_ota_config_id_key(network_id, network_key, frequency_sub_band, network_type, ack);
+    update_ota_config_id_key(appEUI, appKey, frequency_sub_band, network_type, ack);
 
     // configure the Dot for class C operation
     // the Dot must also be configured on the gateway for class C
