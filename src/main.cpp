@@ -1,5 +1,5 @@
 #include "dot_util.h"
-#include "DotEvent.h"
+#include "RadioEvent.h"
 
 #if ACTIVE_EXAMPLE == MAIN
 static std::string network_name = "MultiTech";
@@ -27,15 +27,17 @@ DigitalOut led2(LED2);
 RawSerial pc(USBTX, USBRX, 115200);
 
 void initSetup();
-void dlCallback();
+void dlCallback(uint8_t port, uint8_t *payload, uint16_t size, int16_t rssi, int16_t snr);
 
 int main()
 {
-
+  mts::MTSLog::setLogLevel(mts::MTSLog::TRACE_LEVEL);
   initSetup();
 
   while (true)
   {
+    logInfo("====================================================");
+    logInfo("LogLevel: %d", mts::MTSLog::getLogLevel());
 
     uint8_t randomValue = rand() % 100;
     static uint8_t progressiveValue = 100;
@@ -65,7 +67,8 @@ int main()
     // ONLY ONE of the three functions below should be uncommented depending on the desired wakeup method
     //sleep_wake_rtc_only(deep_sleep);
     //sleep_wake_interrupt_only(deep_sleep);
-    sleep_wake_rtc_or_interrupt(deep_sleep);
+    wait(10);
+    //    sleep_wake_rtc_or_interrupt(deep_sleep);
   }
 
   return 0;
@@ -81,9 +84,7 @@ void dlCallback(uint8_t port, uint8_t *payload, uint16_t size, int16_t rssi, int
 void initSetup()
 {
   // Custom event handler for automatically displaying RX data
-  static DotEvent events(&dlCallback);
-
-  mts::MTSLog::setLogLevel(mts::MTSLog::TRACE_LEVEL);
+  static RadioEvent events(&dlCallback);
 
 #if CHANNEL_PLAN == CP_US915
   lora::ChannelPlan *plan = new lora::ChannelPlan_US915();
@@ -137,7 +138,7 @@ void initSetup()
     // only one method or the other should be used!
     // network ID = crc64(network name)
     // network KEY = cmac(network passphrase)
-    //         update_ota_config_name_phrase(network_name, network_passphrase, frequency_sub_band, network_type, ack);
+    // update_ota_config_name_phrase(network_name, network_passphrase, frequency_sub_band, network_type, ack);
     update_ota_config_id_key(appEUI, appKey, frequency_sub_band, network_type, ack);
 
     // configure the Dot for class C operation

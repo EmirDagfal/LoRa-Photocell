@@ -2,24 +2,29 @@
 #define __ED_DOT_EVENT_H__
 
 #include "dot_util.h"
-#include "mDotEvent.h"
+#include "RadioEvent.h"
 #include "Fota.h"
 
-class DotEvent : public mDotEvent
+class DotEvent : public RadioEvent
 {
+  bool isDownlinkCallbackConfigured;
+
+protected:
+  void (*downlinkCallback)(uint8_t port, uint8_t *payload, uint16_t size, int16_t rssi, int16_t snr);
 
 public:
-  DotEvent() {}
-  DotEvent(void (*callback)(uint8_t, uint8_t *, uint16_t, int16_t, int16_t)) : downlinkCallback(callback) {}
+  DotEvent();
+  DotEvent(void (*downlinkCallback_)(uint8_t, uint8_t *, uint16_t, int16_t, int16_t));
 
-  virtual ~DotEvent() {}
+  virtual ~DotEvent();
 
-  virtual void PacketRx(uint8_t port, uint8_t *payload, uint16_t size, int16_t rssi, int16_t snr, lora::DownlinkControl ctrl, uint8_t slot, uint8_t retries, uint32_t address, bool dupRx);
-  virtual void MacEvent(LoRaMacEventFlags *flags, LoRaMacEventInfo *info);
-  virtual void ServerTime(uint32_t seconds, uint8_t sub_seconds);
+  void setDownlinkCallback(void (*downlinkCallback_)(uint8_t, uint8_t *, uint16_t, int16_t, int16_t));
+  virtual void PacketRx(uint8_t port, uint8_t *payload, uint16_t size, int16_t rssi, int16_t snr, lora::DownlinkControl ctrl, uint8_t slot, uint8_t retries, uint32_t address, bool dupRx)
+  {
 
-  void (*downlinkCallback)(uint8_t port, uint8_t *payload, uint16_t size, int16_t rssi, int16_t snr);
-  void setDownlinkCallback(std::function<void(uint8_t port, uint8_t *payload, uint16_t size, int16_t rssi, int16_t snr)> callback);
+    RadioEvent::PacketRx(port, payload, size, rssi, snr, ctrl, slot, retries, address, dupRx);
+    downlinkCallback(port, payload, size, rssi, snr);
+  }
 };
 
 #endif
