@@ -1,6 +1,23 @@
 #include "dot_util.h"
 #include "RadioEvent.h"
 
+// * Constants * //
+static const uint8_t LOG_LEVEL = mts::MTSLog::TRACE_LEVEL;
+
+// * LoRaWAN configurations * //
+// the active channel plan is the one that will be compiled
+// options are :
+//      CP_US915
+//      CP_AU915
+//      CP_EU868
+//      CP_KR920
+//      CP_AS923
+//      CP_AS923_JAPAN
+//      CP_IN865
+#if !defined(CHANNEL_PLAN)
+#define CHANNEL_PLAN CP_AU915
+#endif
+
 #if ACTIVE_EXAMPLE == MAIN
 static std::string network_name = "MultiTech";
 static std::string network_passphrase = "MultiTech";
@@ -19,21 +36,46 @@ static bool adr = true;
 static bool deep_sleep = false;
 
 mDot *dot = NULL;
-lora::ChannelPlan *plan = NULL;
 
+// * Hardware * //
 DigitalOut led1(LED1);
 DigitalOut led2(LED2);
 
 RawSerial pc(USBTX, USBRX, 115200);
 
+// * Functions * //
+
+/**
+ * @brief Configuraciones LoRaWAN
+ * Configuraciones:
+ * - AppKey
+ * - DevEUI
+ * - ACK
+ * - ADR (Adaptive Data Rate)
+ * - Sub banda de frecuencia
+ * - Clase del dispositivo
+ * - Configuraciones de red (nombre, tipo, etc)
+ * - Retardo de join
+ */
 void initSetup();
+
+/**
+ * @brief Callback para downlinks
+ * @param port Puerto
+ * @param payload Puntero a buffer de entrada
+ * @param size Tamaño del buffer
+ * @param rssi Indicador de fuerza de la señal recibida
+ * @param snr Relacion señal/ruido
+ */
 void dlCallback(uint8_t port, uint8_t *payload, uint16_t size, int16_t rssi, int16_t snr);
 
+// * Main * //
 int main()
 {
-  mts::MTSLog::setLogLevel(mts::MTSLog::TRACE_LEVEL);
+  mts::MTSLog::setLogLevel(LOG_LEVEL);
+  logInfo("LogLevel: %d", mts::MTSLog::getLogLevel());
   initSetup();
-
+  logInfo("LogLevel: %d", mts::MTSLog::getLogLevel());
   while (true)
   {
     logInfo("====================================================");
@@ -67,8 +109,8 @@ int main()
     // ONLY ONE of the three functions below should be uncommented depending on the desired wakeup method
     //sleep_wake_rtc_only(deep_sleep);
     //sleep_wake_interrupt_only(deep_sleep);
+    //sleep_wake_rtc_or_interrupt(deep_sleep);
     wait(10);
-    //    sleep_wake_rtc_or_interrupt(deep_sleep);
   }
 
   return 0;
@@ -86,6 +128,8 @@ void initSetup()
   // Custom event handler for automatically displaying RX data
   static RadioEvent events(&dlCallback);
 
+  // Set Channel plan
+  static lora::ChannelPlan *plan = NULL;
 #if CHANNEL_PLAN == CP_US915
   lora::ChannelPlan *plan = new lora::ChannelPlan_US915();
 #elif CHANNEL_PLAN == CP_AU915
@@ -119,7 +163,7 @@ void initSetup()
     dot->resetNetworkSession();
 
     // make sure library logging is turned on
-    dot->setLogLevel(mts::MTSLog::INFO_LEVEL);
+    // dot->setLogLevel(LOG_LEVEL);
 
     // update configuration if necessary
     if (dot->getJoinMode() != mDot::OTA)

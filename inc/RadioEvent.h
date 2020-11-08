@@ -111,6 +111,7 @@ public:
     }
 
     // * Send to callback
+    logInfo("DOWNLINK!!!!");
     if (info->RxBufferSize > 0 && isDownlinkCallbackConfigured)
     {
       /**        LoRaMacEventInfoStatus Status;
